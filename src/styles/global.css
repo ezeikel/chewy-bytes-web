@@ -1,6 +1,78 @@
 @import "tailwindcss";
 
+/*
+ * Chewy Bytes — design tokens.
+ *
+ * One palette, defined once here as theme variables. Tailwind 4 compiles
+ * `bg-canvas` to `background-color: var(--color-canvas)`, so the dark theme is
+ * just a re-declaration of the same variables inside a prefers-color-scheme
+ * media query below. That override is deliberately unlayered: Tailwind puts
+ * @theme output in `@layer theme`, and unlayered rules win the cascade.
+ */
 @theme {
-  --font-alan-sans: 'Alan Sans', 'sans-serif';
-  --font-inter: 'Inter Variable', 'sans-serif';
+  --font-alan-sans: 'Alan Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-inter: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* Airbnb coral — the Chewy Bytes brand colour, used sparingly. */
+  --color-brand: #ff5a5f;
+
+  --color-canvas: #fcfcfc;
+  --color-surface: #ffffff;
+  --color-ink: #14151a;
+  --color-muted: #6b6f76;
+  --color-line: #e5e5e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-canvas: #0b0b0d;
+    --color-surface: #111114;
+    --color-ink: #f1f1f3;
+    --color-muted: #9a9ca3;
+    --color-line: #24242a;
+  }
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  /* A single faint coral wash behind the masthead — atmosphere, not a hero. */
+  background-image: radial-gradient(
+    62rem 32rem at 50% -13rem,
+    color-mix(in oklab, var(--color-brand) 11%, transparent),
+    transparent 70%
+  );
+  background-repeat: no-repeat;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: color-mix(in oklab, var(--color-brand) 26%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    /* Also zero the stagger, or delayed reveals would sit invisible. */
+    animation-delay: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

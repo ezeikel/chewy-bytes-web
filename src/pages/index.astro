@@ -1,43 +1,237 @@
 ---
-const title = "Chewy Bytes";
-const description = "Building the internet.";
+import '../styles/global.css';
+import '@fontsource/alan-sans/400.css';
+import '@fontsource/alan-sans/500.css';
+import '@fontsource/alan-sans/600.css';
+import '@fontsource-variable/inter';
+
+import ExternalLink from '../components/ExternalLink.astro';
+import {
+  APP_STORE_DEVELOPER_URL,
+  appStoreUrl,
+  apps,
+  playStoreUrl,
+} from '../data/apps';
+
+const SITE_URL = 'https://www.chewybytes.com';
+
+const title = 'Chewy Bytes — consumer apps for web, iOS and Android';
+const description =
+  'Chewy Bytes Limited is a small UK software company building and shipping consumer apps for web, iOS and Android.';
+
 const year = new Date().getFullYear();
-import "./../styles/global.css";
-import "@fontsource/alan-sans";
-import "@fontsource-variable/inter";
+
+/** parkingticketpal.com — the bare domain reads better than a full URL. */
+const displayDomain = (url: string) =>
+  url
+    .replace(/^https?:\/\//, '')
+    .replace(/^www\./, '')
+    .replace(/\/$/, '');
+
+const organisation = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Chewy Bytes Limited',
+  alternateName: 'Chewy Bytes',
+  url: SITE_URL,
+  logo: `${SITE_URL}/chewy-bytes-mark.svg`,
+  email: 'hello@chewybytes.com',
+  description,
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={SITE_URL} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Chewy Bytes" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <link rel="icon" href="/favicon.svg" />
+    <meta property="og:url" content={SITE_URL} />
+    <meta property="og:image" content={`${SITE_URL}/og.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${SITE_URL}/og.png`} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta
+      name="theme-color"
+      content="#fcfcfc"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0b0b0d"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(organisation)}
+      is:inline
+    />
   </head>
-  <body class="min-h-screen bg-white text-slate-900 antialiased">
-    <main
-      class="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center px-6 text-center"
-    >
-      <h1 class="text-4xl font-bold tracking-tight sm:text-5xl font-alan-sans">
-        Chewy Bytes
-      </h1>
-      <p class="mt-3 text-lg text-slate-600 font-inter">
-        Building the internet.
-      </p>
 
-      <p class="mt-6 text-slate-500 font-inter">
-        <a class="underline" href="mailto:hello@chewybytes.com"
-          >hello@chewybytes.com</a
+  <body class="min-h-screen bg-canvas font-inter text-ink antialiased">
+    <header class="border-b border-line">
+      <div
+        class="mx-auto flex max-w-5xl items-center justify-between gap-6 px-6 py-5"
+      >
+        <div class="flex items-center gap-3">
+          <img
+            src="/chewy-bytes-mark.svg"
+            alt=""
+            width="330"
+            height="307"
+            class="h-6 w-auto sm:h-7"
+          />
+          <span
+            class="font-alan-sans text-lg font-semibold tracking-tight sm:text-xl"
+          >
+            Chewy Bytes
+          </span>
+        </div>
+
+        <ExternalLink href={APP_STORE_DEVELOPER_URL} class="text-sm">
+          App Store
+        </ExternalLink>
+      </div>
+    </header>
+
+    <main>
+      <section class="mx-auto max-w-5xl px-6 pt-16 pb-14 sm:pt-24 sm:pb-20">
+        <p
+          class="rise font-alan-sans text-xs font-medium tracking-[0.2em] text-brand uppercase"
         >
-      </p>
+          Chewy Bytes Limited
+        </p>
 
-      <footer class="mt-12 text-sm text-slate-400 font-inter">
-        © {year} Chewy Bytes Limited
-      </footer>
+        <h1
+          class="rise mt-6 max-w-3xl font-alan-sans text-[1.75rem] leading-[1.15] font-semibold tracking-tight text-pretty sm:text-5xl sm:leading-[1.12]"
+          style="animation-delay:60ms"
+        >
+          A small UK software company building and shipping consumer apps for
+          web, iOS and Android.
+        </h1>
+
+        <p
+          class="rise mt-6 max-w-xl text-base text-muted sm:text-lg"
+          style="animation-delay:120ms"
+        >
+          Everything below is live on the App Store today.
+        </p>
+      </section>
+
+      <section class="mx-auto max-w-5xl px-6 pb-20 sm:pb-28">
+        <div class="flex items-baseline justify-between gap-4 pb-5">
+          <h2
+            class="font-alan-sans text-xs font-semibold tracking-[0.18em] uppercase"
+          >
+            On the App Store
+          </h2>
+          <span class="text-sm text-muted tabular-nums">{apps.length}</span>
+        </div>
+
+        <ul class="grid grid-cols-1 border-t border-l border-line sm:grid-cols-2">
+          {
+            apps.map((app, index) => {
+              const playStore = playStoreUrl(app);
+
+              return (
+                <li
+                  class="rise group border-r border-b border-line p-6 transition-colors duration-200 hover:bg-surface sm:p-7"
+                  style={`animation-delay:${140 + index * 35}ms`}
+                >
+                  <div class="flex gap-4 sm:gap-5">
+                    <img
+                      src={`/apps/${app.slug}.png`}
+                      alt={`${app.name} app icon`}
+                      width="512"
+                      height="512"
+                      loading={index < 4 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      class="size-14 shrink-0 rounded-[22%] border border-line transition-transform duration-300 group-hover:-translate-y-0.5 sm:size-16"
+                    />
+
+                    <div class="min-w-0 flex-1">
+                      <h3 class="font-alan-sans text-base leading-snug font-semibold tracking-tight sm:text-lg">
+                        {app.name}
+                      </h3>
+
+                      <p class="mt-1 text-sm text-muted text-pretty">
+                        {app.subtitle}
+                      </p>
+
+                      <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+                        <ExternalLink href={appStoreUrl(app)} emphasis="strong">
+                          App Store
+                        </ExternalLink>
+
+                        {playStore && (
+                          <ExternalLink href={playStore} emphasis="strong">
+                            Google Play
+                          </ExternalLink>
+                        )}
+
+                        <ExternalLink href={app.url}>
+                          {displayDomain(app.url)}
+                        </ExternalLink>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </section>
     </main>
+
+    <footer class="border-t border-line">
+      <div
+        class="mx-auto flex max-w-5xl flex-col gap-5 px-6 py-9 text-sm sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <a
+            href="mailto:hello@chewybytes.com"
+            class="underline decoration-line underline-offset-4 transition-colors hover:text-brand hover:decoration-brand"
+          >
+            hello@chewybytes.com
+          </a>
+          <ExternalLink href="https://www.ezeikel.com">ezeikel.com</ExternalLink>
+        </div>
+
+        <p class="text-muted">&copy; {year} Chewy Bytes Limited</p>
+      </div>
+    </footer>
+
+    <style>
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .rise {
+        animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+    </style>
   </body>
 </html>
