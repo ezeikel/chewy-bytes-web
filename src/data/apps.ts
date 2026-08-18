@@ -19,16 +19,13 @@ export const PLAY_STORE_DEVELOPER_URL =
 /**
  * Google Play kill-switch.
  *
- * The Chewy Bytes Limited developer profile and all of its apps were removed
- * from Google Play on 12 August 2026 while an organisation address
- * verification is appealed. Until that clears, every Play URL — the developer
- * page and each individual listing — returns a 404.
- *
- * A dead store link is worse than no link, so all Play links are hidden behind
- * this flag. The package names below are already correct, so restoring them is
- * a one-line change: flip this to true once the appeal is granted.
+ * Kept as a switch rather than deleted. The Chewy Bytes Limited developer
+ * profile and all of its apps were removed from Google Play on 12 August 2026
+ * over an organisation address verification, and reinstated on 18 August —
+ * during which every Play URL 404'd. A dead store link is worse than no link,
+ * so if it happens again this is a one-line change.
  */
-export const PLAY_STORE_LIVE = false;
+export const PLAY_STORE_LIVE = true;
 
 export type App = {
   /** Matches the icon filename at /apps/<slug>.png. */
