@@ -8,6 +8,8 @@ import '@fontsource-variable/inter';
 import ExternalLink from '../components/ExternalLink.astro';
 import {
   APP_STORE_DEVELOPER_URL,
+  PLAY_STORE_DEVELOPER_URL,
+  PLAY_STORE_LIVE,
   appStoreUrl,
   apps,
   playStoreUrl,
@@ -104,9 +106,18 @@ const organisation = {
           </span>
         </div>
 
-        <ExternalLink href={APP_STORE_DEVELOPER_URL} class="text-sm">
-          App Store
-        </ExternalLink>
+        <nav class="flex items-center gap-4 sm:gap-5">
+          <ExternalLink href={APP_STORE_DEVELOPER_URL} class="text-sm">
+            App Store
+          </ExternalLink>
+          {
+            PLAY_STORE_LIVE && (
+              <ExternalLink href={PLAY_STORE_DEVELOPER_URL} class="text-sm">
+                Google Play
+              </ExternalLink>
+            )
+          }
+        </nav>
       </div>
     </header>
 
@@ -153,7 +164,7 @@ const organisation = {
                       alt={`${app.name} app icon`}
                       width="512"
                       height="512"
-                      loading={index < 4 ? 'eager' : 'lazy'}
+                      loading="eager"
                       decoding="async"
                       class="size-14 shrink-0 rounded-[22%] border border-line transition-transform duration-300 group-hover:-translate-y-0.5 sm:size-16"
                     />
@@ -167,6 +178,9 @@ const organisation = {
                         {app.subtitle}
                       </p>
 
+                      {/* Stores on their own row and the website beneath, so
+                          cards line up. Left inline, the third link wraps on
+                          some names and not others and the grid goes ragged. */}
                       <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
                         <ExternalLink href={appStoreUrl(app)} emphasis="strong">
                           App Store
@@ -177,7 +191,9 @@ const organisation = {
                             Google Play
                           </ExternalLink>
                         )}
+                      </div>
 
+                      <div class="mt-2 text-sm">
                         <ExternalLink href={app.url}>
                           {displayDomain(app.url)}
                         </ExternalLink>
