@@ -134,7 +134,8 @@ const organisation = {
           class="rise mt-6 max-w-xl text-base text-muted sm:text-lg"
           style="animation-delay:60ms"
         >
-          Everything below is live on the App Store and Google Play today.
+          Everything below is live on Google Play today, and on the App Store for
+          all but one.
         </p>
       </section>
 
@@ -151,6 +152,7 @@ const organisation = {
         <ul class="grid grid-cols-1 border-t border-l border-line sm:grid-cols-2">
           {
             apps.map((app, index) => {
+              const appStore = appStoreUrl(app);
               const playStore = playStoreUrl(app);
 
               return (
@@ -182,9 +184,11 @@ const organisation = {
                           cards line up. Left inline, the third link wraps on
                           some names and not others and the grid goes ragged. */}
                       <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-                        <ExternalLink href={appStoreUrl(app)} emphasis="strong">
-                          App Store
-                        </ExternalLink>
+                        {appStore && (
+                          <ExternalLink href={appStore} emphasis="strong">
+                            App Store
+                          </ExternalLink>
+                        )}
 
                         {playStore && (
                           <ExternalLink href={playStore} emphasis="strong">

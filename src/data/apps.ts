@@ -1,10 +1,13 @@
 /**
- * Every Chewy Bytes Limited app that is live and reachable on the App Store.
+ * Every Chewy Bytes Limited app that is live and reachable on the App Store
+ * or Google Play.
  *
- * Source of truth: the live App Store developer page
+ * Source of truth for listed iOS apps: the live App Store developer page
  * (apps.apple.com/gb/developer/chewy-bytes-limited/id1843487426). Each
- * `subtitle` is the verbatim App Store subtitle — it is not marketing copy
- * written for this site, and it must not be reworded here.
+ * `subtitle` is the verbatim App Store subtitle where one exists. It is not
+ * marketing copy written for this site, and it must not be reworded here.
+ * An app still in App Store review keeps the verbatim Google Play short
+ * description instead, and omits `appStoreId`.
  *
  * Nothing in this file may be aspirational. If it isn't shipped and reachable,
  * it doesn't belong here.
@@ -31,12 +34,15 @@ export type App = {
   /** Matches the icon filename at /apps/<slug>.png. */
   slug: string;
   name: string;
-  /** Verbatim App Store subtitle. Do not reword. */
+  /**
+   * Verbatim App Store subtitle, or the verbatim Google Play short
+   * description while the App Store listing is still in review. Do not reword.
+   */
   subtitle: string;
   /** The app's own website. */
   url: string;
-  /** Apple's numeric App Store id. */
-  appStoreId: string;
+  /** Apple's numeric App Store id. Omit while the listing is still in review. */
+  appStoreId?: string;
   /** Android package name — used to build the Play URL when PLAY_STORE_LIVE. */
   androidPackage: string;
 };
@@ -122,10 +128,29 @@ export const apps: App[] = [
     appStoreId: '6753323659',
     androidPackage: 'com.chewybytes.tfccalculator',
   },
+  {
+    slug: 'wildly',
+    name: 'Wildly',
+    subtitle: 'Wild animal pack & hunt game',
+    url: 'https://www.playwildly.app',
+    appStoreId: '6821296654',
+    androidPackage: 'com.chewybytes.wildly.app',
+  },
+  {
+    slug: 'executive-disorder',
+    name: 'Executive Disorder',
+    subtitle:
+      'President simulator: build a cabinet, face nine crises and win the election.',
+    url: 'https://www.playexecutivedisorder.com',
+    androidPackage: 'com.chewybytes.executivedisorder.app',
+  },
 ];
 
+/** Returns null while the App Store listing is still in review. */
 export const appStoreUrl = (app: App) =>
-  `https://apps.apple.com/gb/app/id${app.appStoreId}`;
+  app.appStoreId
+    ? `https://apps.apple.com/gb/app/id${app.appStoreId}`
+    : null;
 
 /** Returns null while PLAY_STORE_LIVE is false, so no dead link can render. */
 export const playStoreUrl = (app: App) =>
