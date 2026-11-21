@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "chewy-bytes-web",
+  "compatibility_date": "2026-10-19",
+  // Static assets only. Wrangler serves this directory and shows it as the
+  // ASSETS binding. A binding name in this file is rejected unless a Worker
+  // script is set, and this site has no server code.
+  "assets": {
+    "directory": "./dist",
+  },
+  "routes": [
+    { "pattern": "chewybytes.com", "custom_domain": true },
+    { "pattern": "www.chewybytes.com", "custom_domain": true },
+  ],
+  // Same plain-text site token as the live Worker. The proxied zone injects
+  // the Web Analytics beacon, which posts to /cdn-cgi/rum. Do not also embed
+  // that snippet in the HTML, or the page would load it twice.
+  "vars": {
+    "CF_WEB_ANALYTICS_TOKEN": "ede386b39fb845549c3292ded2ece44c",
+  },
+  "observability": {
+    "enabled": true,
+  },
+}

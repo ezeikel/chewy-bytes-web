@@ -1,17 +1,10 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-import vercel from '@astrojs/vercel';
 
-// https://astro.build/config
+// Static site. The Cloudflare Worker serves ./dist (see wrangler.jsonc).
 export default defineConfig({
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
   },
-
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-  })
 });
